@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 class Database {
     private $host = DB_HOST;
@@ -6,27 +6,23 @@ class Database {
     private $pass = DB_PASS;
     private $db_name = DB_NAME;
 
-
-
-    private $dbh; // database handler
+    private $dbh;
     private $stmt;
-
 
     public function __construct()
     {
-        //data soure name
-      $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
-    
-      $option = [
-        PDO::ATTR_PERSISTENT => true,
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-      ];
+        // data source name
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->db_name;
 
+        $option = [
+            PDO::ATTR_PERSISTENT => true,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ];
 
         try {
-            $this->dbh = new PDO ($dsn, $this->user, $this->pass, $option);
-        }catch (PDOException $e) {
-            die ($e->getMessege());
+            $this->dbh = new PDO($dsn, $this->user, $this->pass, $option);
+        } catch(PDOException $e) {
+            die($e->getMessage());
         }
     }
 
@@ -37,8 +33,8 @@ class Database {
 
     public function bind($param, $value, $type = null)
     {
-        if(is_null($type)){
-            switch( true ){
+        if( is_null($type) ) {
+            switch( true ) {
                 case is_int($value) :
                     $type = PDO::PARAM_INT;
                     break;
@@ -50,7 +46,6 @@ class Database {
                     break;
                 default :
                     $type = PDO::PARAM_STR;
-                
             }
         }
 
@@ -65,15 +60,14 @@ class Database {
     public function resultSet()
     {
         $this->execute();
-        return$this->stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function single()
     {
         $this->execute();
-        return $this->stmt->fetch();
+        return $this->stmt->fetch(PDO::FETCH_ASSOC);
     }
-
 
     public function rowCount()
     {
@@ -82,11 +76,4 @@ class Database {
 
 
 
-
-
-
-
-
 }
-
-
